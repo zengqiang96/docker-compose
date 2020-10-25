@@ -1,0 +1,16 @@
+version: "3.7"
+services:
+  gogs:
+    container_name: sx-gogs
+    image: gogs/gogs:latest
+    restart: always
+    ports:
+      - "22:22"
+      - "80:3000"
+    volumes:
+      - /doc/gogs/data:/data
+    networks:
+      - sx-net
+networks:
+  sx-net:
+    external: true # 使用自定义创建好的网络，我创建的网络名加sx-net，方便与其他服务通信

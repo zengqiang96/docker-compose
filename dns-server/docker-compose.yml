@@ -1,0 +1,20 @@
+version: '3.7'
+
+services:
+  dnsmasq:
+    container_name: sx-dnsmasq
+    image: andyshinn/dnsmasq
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+    volumes:
+      - ./etc/resolv.dnsmasq:/etc/resolv.dnsmasq
+      - ./etc/dnsmasq.conf:/etc/dnsmasq.conf
+      - ./etc/dnsmasqhosts:/etc/dnsmasqhosts
+    networks:
+      - sx-net
+networks:
+  sx-net:
+    external: true

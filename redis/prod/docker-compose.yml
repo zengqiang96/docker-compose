@@ -1,0 +1,16 @@
+version: '3.7'
+
+services: 
+  redis:
+    image: redis:latest
+    container_name: "sx-redis"
+    restart: always
+    volumes:
+      - /opt/store4/docker/redis/data:/data
+      - ./config/redis.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      - sx-net
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+networks:
+  sx-net:
+    external: true # 使用自定义创建好的网络，我创建的网络名加sx-net，方便与其他服务通信

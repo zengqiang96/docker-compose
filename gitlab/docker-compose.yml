@@ -1,0 +1,21 @@
+version: '3.7'
+services:
+  gitlab:
+    container_name: sx-gitlab
+    image: gitlab/gitlab-ce:latest
+    restart: always
+    ports:
+      - "2201:22"
+    volumes:
+      - /opt/store4/docker/gitlab/config:/etc/gitlab
+      - /opt/store4/docker/gitlab/logs:/var/log/gitlab
+      - /opt/store4/docker/gitlab/data:/var/opt/gitlab
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://gitlab.wemeng.com'
+        gitlab_rails['gitlab_shell_ssh_port'] = 2201
+    networks:
+      - sx-net
+networks:
+  sx-net:
+    external: true

@@ -1,0 +1,82 @@
+version: '3.7'
+
+services:
+  minio1:
+    image: minio/minio
+    container_name: sx-minio1
+    restart: always
+    volumes:
+      - /opt/store1/docker/minio/data1:/data1
+    expose: 
+      - 9000
+    environment:
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: minio123
+    command: server http://minio{1...4}/data1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    networks:
+      - sx-net
+  minio2:
+    image: minio/minio
+    container_name: sx-minio2
+    restart: always
+    volumes:
+      - /opt/store2/docker/minio/data1:/data1
+    expose: 
+      - 9000
+    environment:
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: minio123
+    command: server http://minio{1...4}/data1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    networks:
+      - sx-net
+  minio3:
+    image: minio/minio
+    container_name: sx-minio3
+    restart: always
+    volumes:
+      - /opt/store3/docker/minio/data1:/data1
+    expose: 
+      - 9000
+    environment:
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: minio123
+    command: server http://minio{1...4}/data1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    networks:
+      - sx-net
+  minio4:
+    image: minio/minio
+    container_name: sx-minio4
+    restart: always
+    volumes:
+      - /opt/store4/docker/minio/data1:/data1
+    expose: 
+      - 9000
+    environment:
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: minio123
+    command: server http://minio{1...4}/data1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    networks:
+      - sx-net
+networks:
+  sx-net:
+    external: true # 使用自定义创建好的网络，我创建的网络名加sx-net，方便与其他服务通信

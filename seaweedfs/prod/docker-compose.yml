@@ -1,0 +1,69 @@
+version: '3.7'
+
+services:
+  master:
+    image: chrislusf/seaweedfs # use a remote image
+    container_name: sx-weed-master
+    command: "master -port=9333 -ip=sx-weed-master"
+    expose:
+      - 9333
+      - 19333
+    volumes:
+      - /opt/store4/docker/weed/master-data:/data
+    networks:
+      - sx-net
+  volume1:
+    image: chrislusf/seaweedfs # use a remote image
+    container_name: sx-weed-volume1
+    command: 'volume -mserver="sx-weed-master:9333" -max=100 -port=8080 -ip=sx-weed-volume1'
+    expose:
+      - 8080
+      - 18080
+    volumes:
+      - /opt/store1/docker/weed/volume-data:/data
+    depends_on:
+      - master
+    networks:
+      - sx-net
+  volume2:
+    image: chrislusf/seaweedfs # use a remote image
+    container_name: sx-weed-volume2
+    command: 'volume -mserver="sx-weed-master:9333" -max=100 -port=8080 -ip=sx-weed-volume2'
+    expose:
+      - 8080
+      - 18080
+    volumes:
+      - /opt/store2/docker/weed/volume-data:/data
+    depends_on:
+      - master
+    networks:
+      - sx-net
+  volume3:
+    image: chrislusf/seaweedfs # use a remote image
+    container_name: sx-weed-volume3
+    command: 'volume -mserver="sx-weed-master:9333" -max=100 -port=8080 -ip=sx-weed-volume3'
+    expose:
+      - 8080
+      - 18080
+    volumes:
+      - /opt/store3/docker/weed/volume-data:/data
+    depends_on:
+      - master
+    networks:
+      - sx-net
+  volume4:
+    image: chrislusf/seaweedfs # use a remote image
+    container_name: sx-weed-volume4
+    command: 'volume -mserver="sx-weed-master:9333" -max=100 -port=8080 -ip=sx-weed-volume4'
+    expose:
+      - 8080
+      - 18080
+    volumes:
+      - /opt/store4/docker/weed/volume-data:/data
+    depends_on:
+      - master
+    networks:
+      - sx-net
+networks:
+  sx-net:
+    external: true

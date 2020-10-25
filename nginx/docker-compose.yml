@@ -1,0 +1,18 @@
+version: "3.7"
+services:
+  nginx:
+    container_name: sx-nginx
+    image: nginx:latest
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./conf.d:/etc/nginx/conf.d # 可以在这个目录下指定nginx的配置文件
+      - /opt/store4/docker/nginx/logs:/var/logs
+    networks:
+      sx-net:
+        ipv4_address: 172.18.255.244
+networks:
+  sx-net:
+    external: true # 使用自定义创建好的网络，我创建的网络名加sx-net，方便与其他服务通信

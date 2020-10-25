@@ -1,0 +1,14 @@
+version: "3.7"
+services:
+  nexus:
+    image: sonatype/nexus3:latest
+    ports:
+      - "8970:8081"
+    user: root
+    volumes:
+      - ./data:/nexus-data
+    networks:
+      - sx-net
+networks:
+  sx-net:
+    external: true

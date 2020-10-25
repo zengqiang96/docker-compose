@@ -1,0 +1,129 @@
+version: "3.7"
+services:
+  # 集群版，线上环境
+  sx-etcd-node1:
+    image: quay.mirrors.ustc.edu.cn/coreos/etcd:v3.4.7
+    restart: always
+    container_name: sx-etcd-node1
+    networks:
+      - sx-net
+    volumes:
+      - /opt/store4/docker/etcd/node1:/etcd-data
+    command:
+      - /usr/local/bin/etcd
+      - --data-dir=/etcd-data
+      - --name
+      - sx-etcd-node1
+      - --initial-advertise-peer-urls
+      - http://sx-etcd-node1:2380
+      - --listen-peer-urls
+      - http://0.0.0.0:2380
+      - --advertise-client-urls
+      - http://sx-etcd-node1:2379
+      - --listen-client-urls
+      - http://0.0.0.0:2379
+      - --initial-cluster
+      - sx-etcd-node1=http://sx-etcd-node1:2380,sx-etcd-node2=http://sx-etcd-node2:2380,sx-etcd-node3=http://sx-etcd-node3:2380
+      - --initial-cluster-state
+      - new
+      - --initial-cluster-token
+      - docker-etcd
+  sx-etcd-node2:
+    image: quay.mirrors.ustc.edu.cn/coreos/etcd:v3.4.7
+    restart: always
+    container_name: sx-etcd-node2
+    networks:
+      - sx-net
+    volumes:
+      - /opt/store4/docker/etcd/node2:/etcd-data
+    command:
+      - /usr/local/bin/etcd
+      - --data-dir=/etcd-data
+      - --name
+      - sx-etcd-node2
+      - --initial-advertise-peer-urls
+      - http://sx-etcd-node2:2380
+      - --listen-peer-urls
+      - http://0.0.0.0:2380
+      - --advertise-client-urls
+      - http://sx-etcd-node2:2379
+      - --listen-client-urls
+      - http://0.0.0.0:2379
+      - --initial-cluster
+      - sx-etcd-node1=http://sx-etcd-node1:2380,sx-etcd-node2=http://sx-etcd-node2:2380,sx-etcd-node3=http://sx-etcd-node3:2380
+      - --initial-cluster-state
+      - new
+      - --initial-cluster-token
+      - docker-etcd
+  sx-etcd-node3:
+    image: quay.mirrors.ustc.edu.cn/coreos/etcd:v3.4.7
+    restart: always
+    container_name: sx-etcd-node3
+    networks:
+      - sx-net
+    volumes:
+      - /opt/store4/docker/etcd/node3:/etcd-data
+    command:
+      - /usr/local/bin/etcd
+      - --data-dir=/etcd-data
+      - --name
+      - sx-etcd-node3
+      - --initial-advertise-peer-urls
+      - http://sx-etcd-node3:2380
+      - --listen-peer-urls
+      - http://0.0.0.0:2380
+      - --advertise-client-urls
+      - http://sx-etcd-node3:2379
+      - --listen-client-urls
+      - http://0.0.0.0:2379
+      - --initial-cluster
+      - sx-etcd-node1=http://sx-etcd-node1:2380,sx-etcd-node2=http://sx-etcd-node2:2380,sx-etcd-node3=http://sx-etcd-node3:2380
+      - --initial-cluster-state
+      - new
+      - --initial-cluster-token
+      - docker-etcd
+  # 单机版，线下环境
+  sx-etcd-dev-node:
+    image: quay.mirrors.ustc.edu.cn/coreos/etcd:v3.4.7
+    container_name: "sx-etcd-dev-node"
+    restart: always
+    volumes:
+      - /opt/store4/docker/etcd/dev-node:/etcd-data
+    ports:
+      - 2379:2379
+    command:
+      - /usr/local/bin/etcd
+      - --data-dir=/etcd-data
+      - --name
+      - sx-etcd-dev-node
+      - --initial-advertise-peer-urls
+      - http://sx-etcd-dev-node:2380
+      - --listen-peer-urls
+      - http://0.0.0.0:2380
+      - --advertise-client-urls
+      - http://sx-etcd-dev-node:2379
+      - --listen-client-urls
+      - http://0.0.0.0:2379
+      - --initial-cluster
+      - sx-etcd-dev-node=http://sx-etcd-dev-node:2380
+    networks:
+      - sx-net
+  etcd-manage:
+    image: shiguanghuxian/etcd-manage:1
+    restart: always
+    container_name: sx-etcd-manage
+    ports:
+      - 10280:10280
+    volumes:
+      - ./manage/config/cfg.toml:/app/config/cfg.toml
+      - /opt/store4/docker/etcd/manage/logs:/app/logs
+    networks:
+      - sx-net
+    depends_on:
+      - sx-etcd-node1
+      - sx-etcd-node2
+      - sx-etcd-node3
+      - sx-etcd-dev-node
+networks:
+  sx-net:
+    external: true

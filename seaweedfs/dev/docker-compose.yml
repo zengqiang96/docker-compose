@@ -1,0 +1,55 @@
+version: '3.7'
+
+services:
+  master:
+    image: chrislusf/seaweedfs # use a remote image
+    container_name: sx-weed-master-dev
+    ports:
+      - 9333:9333
+      - 19333:19333
+    command: "master -ip=sx-weed-master-dev"
+    volumes:
+      - /opt/store4/docker/weed/master-dev-data:/data
+    networks:
+      - sx-net
+  volume1:
+    image: chrislusf/seaweedfs # use a remote image
+    container_name: sx-weed-volume-dev1
+    ports:
+      - 9081:9081
+    command: 'volume -mserver="sx-weed-master-dev:9333" -port=9081 -ip=sx-weed-volume-dev1'
+    volumes:
+      - /opt/store4/docker/weed/volume-dev-data1:/data
+    depends_on:
+      - master
+    networks:
+      - sx-net
+  volume2:
+    image: chrislusf/seaweedfs # use a remote image
+    container_name: sx-weed-volume-dev2
+    ports:
+      - 9082:9082
+    command: 'volume -mserver="sx-weed-master-dev:9333" -port=9082 -ip=sx-weed-volume-dev2'
+    volumes:
+      - /opt/store4/docker/weed/volume-dev-data2:/data
+    depends_on:
+      - master
+    networks:
+      - sx-net
+  filer:
+    image: chrislusf/seaweedfs # use a remote image
+    container_name: sx-weed-filer-dev
+    ports:
+      - 8888:8888
+    command: 'filer -master="sx-weed-master-dev:9333"'
+    tty: true
+    stdin_open: true
+    depends_on:
+      - master
+      - volume1
+      - volume2
+    networks:
+      - sx-net
+networks:
+  sx-net:
+    external: true

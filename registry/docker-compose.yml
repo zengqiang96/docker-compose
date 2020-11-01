@@ -16,7 +16,7 @@ services:
     image: parabuzzle/craneoperator:latest
     restart: always
     environment:
-      REGISTRY_HOST: sx-registry-web
+      REGISTRY_HOST: sx-registry
       REGISTRY_PORT: 5000
       REGISTRY_PROTOCOL: http
       REGISTRY_USERNAME: admin

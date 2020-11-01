@@ -12,6 +12,7 @@ services:
       DRONE_RUNNER_CAPACITY: 2
       DRONE_RUNNER_NAME: ${HOSTNAME}
     volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
       - /opt/store4/docker/drone-runner/data:/data
     networks:
       - sx-net

@@ -1,0 +1,20 @@
+version: '3.7'
+
+services:
+  dnsmasq:
+    container_name: sx-drone
+    image: drone/drone:latest
+    restart: always
+    environment:
+      - DRONE_AGENTS_ENABLED: true
+      - DRONE_GOGS_SERVER: http://gogs.wemeng.com
+      - DRONE_RPC_SECRET: ALQU2M0KdptXUdTPKcEw
+      - DRONE_SERVER_HOST: drone.wemeng.com
+      - DRONE_SERVER_PROTO: http
+    volumes:
+      - /opt/store4/docker/drone/data:/data
+    networks:
+      - sx-net
+networks:
+  sx-net:
+    external: true

@@ -1,10 +1,11 @@
-version: '3'
+version: '3.7'
 
 services:
-  prometheus:
-    image: registry:2
-    container_name: "registry2"
+  registry:
+    image: registry:2.7.1
+    restart: always
+    container_name: "registry"
     volumes:
-      - ./data:/var/lib/registry
+      - /opt/store4/docker/registry/data:/var/lib/registry
     ports:
       - 5000:5000

@@ -19,6 +19,9 @@ services:
       REGISTRY_HOST: sx-registry-web
       REGISTRY_PORT: 5000
       REGISTRY_PROTOCOL: http
+      REGISTRY_USERNAME: admin
+      REGISTRY_PASSWORD: admin
+      TITLE: Registry
       SSL_VERIFY: "false"
       ALLOW_REGISTRY_LOGIN: "true"
       REGISTRY_ALLOW_DELETE: "true"

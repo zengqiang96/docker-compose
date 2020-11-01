@@ -1,11 +1,29 @@
 version: '3.7'
 
 services:
+  # registry使用的是5000端口
   registry:
+    container_name: sx-registry
     image: registry:2.7.1
     restart: always
-    container_name: "registry"
     volumes:
       - /opt/store4/docker/registry/data:/var/lib/registry
-    ports:
-      - 5000:5000
+    networks:
+      - sx-net
+  # registry-web使用80端口
+  registry-web:
+    container_name: sx-registry-web
+    image: parabuzzle/craneoperator:latest
+    restart: always
+    environment:
+      REGISTRY_HOST: sx-registry-web
+      REGISTRY_PORT: 5000
+      REGISTRY_PROTOCOL: http
+      SSL_VERIFY: "false"
+      ALLOW_REGISTRY_LOGIN: "true"
+      REGISTRY_ALLOW_DELETE: "true"
+    networks:
+      - sx-net
+networks:
+  sx-net:
+    external: true

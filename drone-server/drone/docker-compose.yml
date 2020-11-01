@@ -1,12 +1,12 @@
 version: '3.7'
 
 services:
-  dnsmasq:
+  drone:
     container_name: sx-drone
     image: drone/drone:latest
     restart: always
     environment:
-      - DRONE_AGENTS_ENABLED: true
+      - DRONE_AGENTS_ENABLED: "true"
       - DRONE_GOGS_SERVER: http://gogs.wemeng.com
       - DRONE_RPC_SECRET: ALQU2M0KdptXUdTPKcEw
       - DRONE_SERVER_HOST: drone.wemeng.com

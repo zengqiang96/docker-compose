@@ -4,4 +4,6 @@
 192.168.0.199 xconf.wemeng.com
 192.168.0.199 drone.wemeng.com
 192.168.0.199 store.wemeng.com
+192.168.0.199 images.wemeng.com
+192.168.0.199 registry.wemeng.com
 192.168.0.200 gogs.wemeng.com

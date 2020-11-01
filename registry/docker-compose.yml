@@ -1,10 +1,35 @@
-version: '3'
+version: '3.7'
 
 services:
-  prometheus:
-    image: registry:2
-    container_name: "registry2"
+  # registry使用的是5000端口
+  registry:
+    container_name: sx-registry
+    image: registry:2.7.1
+    restart: always
     volumes:
-      - ./data:/var/lib/registry
-    ports:
-      - 5000:5000
+      - /opt/store4/docker/registry/data:/var/lib/registry
+      - ./config.yml:/etc/docker/registry/config.yml
+    networks:
+      - sx-net
+  # registry-web使用80端口
+  registry-web:
+    container_name: sx-registry-web
+    image: parabuzzle/craneoperator:latest
+    restart: always
+    environment:
+      REGISTRY_HOST: sx-registry
+      REGISTRY_PORT: 5000
+      REGISTRY_PROTOCOL: http
+      REGISTRY_USERNAME: admin
+      REGISTRY_PASSWORD: admin
+      TITLE: Registry
+      SSL_VERIFY: "false"
+      ALLOW_REGISTRY_LOGIN: "true"
+      REGISTRY_ALLOW_DELETE: "true"
+    depends_on:
+      - registry
+    networks:
+      - sx-net
+networks:
+  sx-net:
+    external: true

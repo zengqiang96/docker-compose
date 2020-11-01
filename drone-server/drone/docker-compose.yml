@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   drone:
-    container_name: sx-drone
+    container_name:
     image: drone/drone:latest
     restart: always
     environment:

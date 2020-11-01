@@ -6,11 +6,11 @@ services:
     image: drone/drone-runner-docker:latest
     restart: always
     environment:
-      - DRONE_RPC_PROTO: http
-      - DRONE_RPC_HOST: drone.wemeng.com
-      - DRONE_RPC_SECRET: ALQU2M0KdptXUdTPKcEw
-      - DRONE_RUNNER_CAPACITY: 2
-      - DRONE_RUNNER_NAME: ${HOSTNAME}
+      DRONE_RPC_PROTO: http
+      DRONE_RPC_HOST: drone.wemeng.com
+      DRONE_RPC_SECRET: ALQU2M0KdptXUdTPKcEw
+      DRONE_RUNNER_CAPACITY: 2
+      DRONE_RUNNER_NAME: ${HOSTNAME}
     volumes:
       - /opt/store4/docker/drone-runner/data:/data
     networks:

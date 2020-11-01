@@ -2,7 +2,7 @@ version: "3.7"
 services:
   gogs:
     container_name: sx-gogs
-    image: gogs/gogs:latest
+    image: gogs/gogs:0.12
     restart: always
     ports:
       - "10022:22"

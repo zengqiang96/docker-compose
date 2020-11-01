@@ -22,6 +22,8 @@ services:
       SSL_VERIFY: "false"
       ALLOW_REGISTRY_LOGIN: "true"
       REGISTRY_ALLOW_DELETE: "true"
+    depends_on:
+      - registry
     networks:
       - sx-net
 networks:

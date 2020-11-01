@@ -4,6 +4,7 @@ services:
   dnsmasq:
     container_name: sx-dnsmasq
     image: andyshinn/dnsmasq
+    restart: always
     cap_add:
       - NET_ADMIN
     ports:

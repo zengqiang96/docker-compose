@@ -1,0 +1,15 @@
+# https://github.com/elastic/beats/blob/master/filebeat/filebeat.reference.yml
+
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths:
+      - /var/log/*.log
+    json.keys_under_root: true
+    json.overwrite_keys: true
+
+output.kafka:
+  enabled: true
+  hosts: ["sx-kafka1:9092", "sx-kafka2:9092","sx-kafka3:9092"]
+  topic: beats
+  required_acks: 1

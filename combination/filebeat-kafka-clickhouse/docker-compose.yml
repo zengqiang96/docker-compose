@@ -1,0 +1,97 @@
+version: '3.8'
+services:
+  filebeat:
+    container_name: sx-filebeat
+    hostname: filebeat
+    image: docker.elastic.co/beats/filebeat:7.10.0
+    user: root
+    volumes:
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - /var/run/docker.sock:/var/run/docker.sock
+      - {你的日志目录}:/var/log
+    depends_on: 
+      - kafka1
+      - kafka2
+      - kafka3
+    networks:
+      - sx-net
+  kafka1: 
+    image: wurstmeister/kafka:latest
+    container_name: sx-kafka1
+    hostname: kafka1
+    environment: 
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://:9092
+      KAFKA_LISTENERS: PLAINTEXT://:9092
+      KAFKA_BROKER_ID: 0
+      KAFKA_ZOOKEEPER_CONNECT: zoo1:2181,zoo2:2181,zoo3:2181
+    depends_on: 
+      - zoo1
+      - zoo2
+      - zoo3
+    networks: 
+      - sx-net
+  kafka2: 
+    image: wurstmeister/kafka:latest
+    container_name: sx-kafka2
+    hostname: kafka2
+    environment: 
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://:9092
+      KAFKA_LISTENERS: PLAINTEXT://:9092
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zoo1:2181,zoo2:2181,zoo3:2181
+    depends_on: 
+      - zoo1
+      - zoo2
+      - zoo3
+    networks: 
+      - sx-net
+  kafka3: 
+    image: wurstmeister/kafka:latest
+    container_name: sx-kafka3
+    hostname: kafka3
+    environment: 
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://:9092
+      KAFKA_LISTENERS: PLAINTEXT://:9092
+      KAFKA_BROKER_ID: 2
+      KAFKA_ZOOKEEPER_CONNECT: zoo1:2181,zoo2:2181,zoo3:2181
+    depends_on: 
+      - zoo1
+      - zoo2
+      - zoo3
+    networks: 
+      - sx-net
+  clichhouse:
+    image: yandex/clickhouse-server:20.8.7.15
+    container_name: sx-clichhouse
+    networks: 
+      - sx-net
+  zoo1:
+    image: zookeeper:latest
+    hostname: zoo1
+    container_name: sx-zoo1
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=0.0.0.0:2888:3888;2181 server.2=zoo2:2888:3888;2181 server.3=zoo3:2888:3888;2181
+    networks:
+      - sx-net
+  zoo2:
+    image: zookeeper:latest
+    hostname: zoo2
+    container_name: sx-zoo2
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zoo1:2888:3888;2181 server.2=0.0.0.0:2888:3888;2181 server.3=zoo3:2888:3888;2181
+    networks:
+      - sx-net
+  zoo3:
+    image: zookeeper:latest
+    hostname: zoo3
+    container_name: sx-zoo3
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zoo1:2888:3888;2181 server.2=zoo2:2888:3888;2181 server.3=0.0.0.0:2888:3888;2181
+    networks:
+      - sx-net
+networks:
+  sx-net:
+    external: true

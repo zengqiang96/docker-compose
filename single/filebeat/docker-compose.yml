@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   filebeat:
-    container_name: sx_filebeat
+    container_name: sx-filebeat
     hostname: filebeat
     image: docker.elastic.co/beats/filebeat:7.10.0
     # Need to override user so we can access the log files, and docker.sock

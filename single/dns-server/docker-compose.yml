@@ -14,8 +14,3 @@ services:
       - ./etc/resolv.dnsmasq:/etc/resolv.dnsmasq
       - ./etc/dnsmasq.conf:/etc/dnsmasq.conf
       - ./etc/dnsmasqhosts:/etc/dnsmasqhosts
-    networks:
-      - sx-net
-networks:
-  sx-net:
-    external: true

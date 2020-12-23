@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.23.0
+    container_name: sx-prometheus
+    ports:
+      - 9090:9090
+    volumes: 
+      - ./prometheus:/etc/prometheus
+    networks:
+      - sx-net
+    command: 
+      - --web.enable-lifecycle
+      - --config.file=/etc/prometheus/prometheus.yml
+  grafana: 
+    image: grafana/grafana:7.3.6
+    container_name: sx-grafana
+    user: root
+    ports:
+      - 3000:3000
+    environment: 
+      GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: vertamedia-clickhouse-datasource 
+    networks:
+      - sx-net
+  clickhouse:
+    image: yandex/clickhouse-server:20.8.9.6
+    container_name: sx-clickhouse
+    ports: 
+      - 9000:9000
+    networks:
+      - sx-net
+networks:
+  sx-net:
+    external: true

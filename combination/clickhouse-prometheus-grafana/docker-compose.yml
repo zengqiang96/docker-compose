@@ -21,6 +21,7 @@ services:
       - 3000:3000
     environment: 
       GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: vertamedia-clickhouse-datasource 
+      # GF_INSTALL_PLUGINS: "vertamedia-clickhouse-datasource"
     networks:
       - sx-net
   clickhouse:
@@ -28,6 +29,25 @@ services:
     container_name: sx-clickhouse
     ports: 
       - 9000:9000
+    networks:
+      - sx-net
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.37.3
+    container_name: sx-cadvisor
+    ports: 
+      - 8080:8080
+    volumes: 
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    networks:
+      - sx-net
+  node-exporter:
+    image: prom/node-exporter:v1.0.1
+    container_name: sx-node-exporter
+    ports:
+      - 9100:9100
     networks:
       - sx-net
 networks:

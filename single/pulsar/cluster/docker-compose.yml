@@ -36,80 +36,80 @@ services:
       - ./zoo3/datalog:/datalog
     networks: 
       - sx-net
-  # pulsar-init:
+  pulsar-init:
+    image: apachepulsar/pulsar:2.4.0
+    container_name: sx-pulsar-init
+    # command: ["ls", "-l"]
+    command: ["bin/pulsar", "initialize-cluster-metadata", 
+     "--cluster", "pulsar-log-msg-cluster",
+     "--zookeeper", "sx-zoo1:2181", 
+     "--configuration-store", "sx-zoo1:2181", 
+     "--web-service-url", "http://sx-pulsar01:8080,sx-pulsar02:8080,sx-pulsar03:8080",
+     "--web-service-url-tls", "https://sx-pulsar01:8443,sx-pulsar02:8443,sx-pulsar03:8443",
+     "--broker-service-url", "pulsar://sx-pulsar01:6650,sx-pulsar02:6650,sx-pulsar03:6650",
+     "--broker-service-url-tls", "pulsar+ssl://sx-pulsar01:6651,sx-pulsar02:6651,sx-pulsar03:6651"]
+    networks: 
+      - sx-net
+    depends_on: 
+      - zoo1
+      - zoo2
+      - zoo3
+  # bookie01:
   #   image: apachepulsar/pulsar:2.4.0
-  #   container_name: sx-pulsar-init
-  #   # command: ["ls", "-l"]
-  #   command: ["bin/pulsar", "initialize-cluster-metadata", 
-  #    "--cluster", "pulsar-cluster-1",
-  #    "--zookeeper", "sx-zoo1:2181", 
-  #    "--configuration-store", "sx-zoo1:2181", 
-  #    "--web-service-url", "http://sx-pulsar01:8080,sx-pulsar02:8080,sx-pulsar03:8080",
-  #    "--web-service-url-tls", "https://sx-pulsar01:8443,sx-pulsar02:8443,sx-pulsar03:8443",
-  #    "--broker-service-url", "pulsar://sx-pulsar01:6650,sx-pulsar02:6650,sx-pulsar03:6650",
-  #    "--broker-service-url-tls", "pulsar+ssl://sx-pulsar01:6651,sx-pulsar02:6651,sx-pulsar03:6651"]
+  #   container_name: sx-bookie01
+  #   volumes: 
+  #     - ./bookie/bookkeeper.conf:/pulsar/conf/bookkeeper.conf
+  #     - ./bookie/data/bookie01:/pulsar/data
+  #   command: ["bin/pulsar", "bookie"]
+  #   networks: 
+  #     sx-net: 
+  #       ipv4_address: 172.18.10.1
+  #   depends_on: 
+  #       - zoo1
+  #       - zoo2
+  #       - zoo3
+  # bookie02:
+  #   image: apachepulsar/pulsar:2.4.0
+  #   container_name: sx-bookie02
+  #   volumes: 
+  #     - ./bookie/bookkeeper.conf:/pulsar/conf/bookkeeper.conf
+  #     - ./bookie/data/bookie02:/pulsar/data
+  #   command: ["bin/pulsar", "bookie"]
+  #   networks: 
+  #     sx-net: 
+  #       ipv4_address: 172.18.10.2
+  #   depends_on: 
+  #     - zoo1
+  #     - zoo2
+  #     - zoo3
+  # broker01:
+  #   image: apachepulsar/pulsar:2.4.0
+  #   container_name: sx-broker01
+  #   ports: 
+  #     - 6650:6650
+  #   volumes: 
+  #     - ./broker/broker.conf:/pulsar/conf/broker.conf
+  #   command: ["bin/pulsar", "broker"]
   #   networks: 
   #     - sx-net
   #   depends_on: 
   #     - zoo1
   #     - zoo2
   #     - zoo3
-  bookie01:
-    image: apachepulsar/pulsar:2.4.0
-    container_name: sx-bookie01
-    volumes: 
-      - ./bookie/bookkeeper.conf:/pulsar/conf/bookkeeper.conf
-      - ./bookie/data/bookie01:/pulsar/data
-    command: ["bin/pulsar", "bookie"]
-    networks: 
-      sx-net: 
-        ipv4_address: 172.18.10.1
-    depends_on: 
-        - zoo1
-        - zoo2
-        - zoo3
-  bookie02:
-    image: apachepulsar/pulsar:2.4.0
-    container_name: sx-bookie02
-    volumes: 
-      - ./bookie/bookkeeper.conf:/pulsar/conf/bookkeeper.conf
-      - ./bookie/data/bookie02:/pulsar/data
-    command: ["bin/pulsar", "bookie"]
-    networks: 
-      sx-net: 
-        ipv4_address: 172.18.10.2
-    depends_on: 
-      - zoo1
-      - zoo2
-      - zoo3
-  broker01:
-    image: apachepulsar/pulsar:2.4.0
-    container_name: sx-broker01
-    ports: 
-      - 6650:6650
-    volumes: 
-      - ./broker/broker.conf:/pulsar/conf/broker.conf
-    command: ["bin/pulsar", "broker"]
-    networks: 
-      - sx-net
-    depends_on: 
-      - zoo1
-      - zoo2
-      - zoo3
-  broker02:
-    image: apachepulsar/pulsar:2.4.0
-    container_name: sx-broker02
-    ports: 
-      - 6651:6650
-    volumes: 
-      - ./broker/broker.conf:/pulsar/conf/broker.conf
-    command: ["bin/pulsar", "broker"]
-    networks: 
-      - sx-net
-    depends_on: 
-      - zoo1
-      - zoo2
-      - zoo3
+  # broker02:
+  #   image: apachepulsar/pulsar:2.4.0
+  #   container_name: sx-broker02
+  #   ports: 
+  #     - 6651:6650
+  #   volumes: 
+  #     - ./broker/broker.conf:/pulsar/conf/broker.conf
+  #   command: ["bin/pulsar", "broker"]
+  #   networks: 
+  #     - sx-net
+  #   depends_on: 
+  #     - zoo1
+  #     - zoo2
+  #     - zoo3
 networks:
   sx-net:
     external: true

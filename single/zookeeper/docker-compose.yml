@@ -1,9 +1,9 @@
-version: "3.7"
+version: "3.8"
 services:
   zoo1:
-    image: zookeeper:latest
+    image: zookeeper:3.6.2
     hostname: zoo1
-    container_name: sx_zoo1
+    container_name: sx-zoo1
     # ports:
     #  - "2181:2181"
     environment:
@@ -12,9 +12,9 @@ services:
     networks:
       - sx-net
   zoo2:
-    image: zookeeper:latest
+    image: zookeeper:3.6.2
     hostname: zoo2
-    container_name: sx_zoo2
+    container_name: sx-zoo2
     # ports:
       # - "2182:2181"
     environment:
@@ -23,9 +23,9 @@ services:
     networks:
       - sx-net
   zoo3:
-    image: zookeeper:latest
+    image: zookeeper:3.6.2
     hostname: zoo3
-    container_name: sx_zoo3
+    container_name: sx-zoo3
     # ports:
     #   - "2183:2181"
     environment:

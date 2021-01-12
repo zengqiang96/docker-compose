@@ -1,5 +1,38 @@
 version: '3.8'
 services: 
+  zoo1:
+    image: zookeeper:latest
+    hostname: zoo1
+    container_name: sx_zoo1
+    # ports:
+    #  - "2181:2181"
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=0.0.0.0:2888:3888;2181 server.2=zoo2:2888:3888;2181 server.3=zoo3:2888:3888;2181
+    networks:
+      - sx-net
+  zoo2:
+    image: zookeeper:latest
+    hostname: zoo2
+    container_name: sx_zoo2
+    # ports:
+      # - "2182:2181"
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zoo1:2888:3888;2181 server.2=0.0.0.0:2888:3888;2181 server.3=zoo3:2888:3888;2181
+    networks:
+      - sx-net
+  zoo3:
+    image: zookeeper:latest
+    hostname: zoo3
+    container_name: sx_zoo3
+    # ports:
+    #   - "2183:2181"
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zoo1:2888:3888;2181 server.2=zoo2:2888:3888;2181 server.3=0.0.0.0:2888:3888;2181
+    networks:
+      - sx-net
   kafka1: 
     image: wurstmeister/kafka
     container_name: sx-kafka1
@@ -31,15 +64,6 @@ services:
       KAFKA_LISTENERS: PLAINTEXT://:9092
       KAFKA_BROKER_ID: 2
       KAFKA_ZOOKEEPER_CONNECT: zoo1:2181,zoo2:2181,zoo3:2181
-    networks: 
-      - sx-net
-  kafka-manager:
-    container_name: sx-kafka-manager
-    image: sheepkiller/kafka-manager              ## 镜像：开源的web管理kafka集群的界面
-    environment:
-        ZK_HOSTS: zoo1:2181
-    ports:
-      - "9000:9000"                               
     networks: 
       - sx-net
 networks:

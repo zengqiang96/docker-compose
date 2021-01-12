@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  cluster-s0-r1:
+    container_name: sx-cluster-s0-r1
+    image: yandex/clickhouse-server:20.8.7.15
+    volumes: 
+      - ./cluster-s0-r1/etc:/etc/clickhouse-server
+      - ./cluster-s0-r1/data:/var/lib/clickhouse/
+    networks:
+      - sx-net
+  cluster-s1-r1:
+    container_name: sx-cluster-s1-r1
+    image: yandex/clickhouse-server:20.8.7.15
+    volumes: 
+      - ./cluster-s1-r1/etc:/etc/clickhouse-server
+      - ./cluster-s1-r1/data:/var/lib/clickhouse/
+    networks:
+      - sx-net
+  cluster-s2-r1:
+    container_name: sx-cluster-s2-r1
+    image: yandex/clickhouse-server:20.8.7.15
+    volumes: 
+      - ./cluster-s2-r1/etc:/etc/clickhouse-server
+      - ./cluster-s2-r1/data:/var/lib/clickhouse/
+    networks:
+      - sx-net
+networks:
+  sx-net:
+    external: true # 使用自定义创建好的网络，我创建的网络名加sx-net，方便与其他服务通信

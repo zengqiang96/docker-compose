@@ -12,7 +12,7 @@ services:
       - 9300:9300
     volumes: 
       - ./es/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-      - ./es/data:/usr/share/elasticsearch/data
+      # - ./es/data:/usr/share/elasticsearch/data
     networks:
       - sx-net
   kibana:

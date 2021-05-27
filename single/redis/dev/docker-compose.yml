@@ -7,12 +7,12 @@ services:
     restart: always
     ports:
       - 6379:6379
-    volumes:
-      - /opt/store4/docker/redis-dev/data:/data
-      - ./config/redis.conf:/usr/local/etc/redis/redis.conf
-    networks:
-      - sx-net
+    # volumes:
+    #   - /opt/store4/docker/redis-dev/data:/data
+    #   - ./config/redis.conf:/usr/local/etc/redis/redis.conf
+    # networks:
+    #   - sx-net
     command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
-networks:
-  sx-net:
-    external: true # 使用自定义创建好的网络，我创建的网络名加sx-net，方便与其他服务通信
+# networks:
+#   sx-net:
+#     external: true # 使用自定义创建好的网络，我创建的网络名加sx-net，方便与其他服务通信

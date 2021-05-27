@@ -12,8 +12,10 @@ services:
       MYSQL_PASSWORD: mysql
     ports:
       - "3306:3306"
+    expose: 
+      - 3306
     volumes:
-      - /doc/mysql/data:/var/lib/mysql # data目录我通过.gitignore文件忽略了
+      - ./data:/var/lib/mysql # data目录我通过.gitignore文件忽略了
       - ./conf:/etc/mysql/conf.d # 可以在这个目录下指定mysql的配置文件
     networks:
       - sx-net

@@ -1,0 +1,27 @@
+version: "3.7"
+services:
+  mysql:
+    container_name: sx-mysql-master
+    image: mysql:5.7
+    restart: always
+    secrets:
+      - mysql_root_password
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mysql
+    # ports:
+    #   - "3306:3306"
+    expose: 
+      - 3306
+    volumes:
+      - ./data:/var/lib/mysql # data目录我通过.gitignore文件忽略了
+      - ./conf:/etc/mysql/conf.d # 可以在这个目录下指定mysql的配置文件
+    networks:
+      - sx-net
+secrets:
+  mysql_root_password:
+    file: mysql_root_password.txt # 用文件指定root的密码
+networks:
+  sx-net:
+    external: true # 使用自定义创建好的网络，我创建的网络名加sx-net，方便与其他服务通信

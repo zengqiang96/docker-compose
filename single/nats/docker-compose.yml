@@ -1,0 +1,13 @@
+version: "3.7"
+services:
+  mysql:
+    container_name: sx-nats
+    image: nats:2.2.6-alpine
+    restart: always
+    ports: 
+      - 8222:8222
+    networks:
+      - sx-net
+networks:
+  sx-net:
+    external: true # 使用自定义创建好的网络，我创建的网络名加sx-net，方便与其他服务通信

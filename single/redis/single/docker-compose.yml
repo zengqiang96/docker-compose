@@ -6,7 +6,7 @@ services:
     container_name: "sx-redis"
     restart: always
     volumes:
-      - /opt/store4/docker/redis/data:/data
+      - ./data:/data
       - ./config/redis.conf:/usr/local/etc/redis/redis.conf
     networks:
       - sx-net
